@@ -1,9 +1,11 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
   HttpStatus,
   Param,
+  Post,
   Query,
 } from '@nestjs/common';
 
@@ -40,6 +42,15 @@ export class TodoController {
       description: '',
       skip,
       limit,
+    };
+  }
+
+  @Post()
+  createOne(@Body() body: { title: string; completed?: boolean }) {
+    const { title, completed } = body;
+    return {
+      title,
+      completed,
     };
   }
 }
