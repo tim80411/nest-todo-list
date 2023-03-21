@@ -8,6 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { CreateTodoDto } from '../controller/dto/create-todo.dto';
 
 @Controller('todos')
 export class TodoController {
@@ -46,11 +47,11 @@ export class TodoController {
   }
 
   @Post()
-  createOne(@Body() body: { title: string; completed?: boolean }) {
-    const { title, completed } = body;
+  createOne(@Body() body: CreateTodoDto) {
+    const { title, isCompleted } = body;
     return {
       title,
-      completed,
+      isCompleted,
     };
   }
 }
