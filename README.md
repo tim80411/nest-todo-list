@@ -46,4 +46,4 @@ We can use `passthrough: boolean` argument to force using standard mode.
 Although we can completely control exceptions by implementing a custom exception filter, we may want to try using the custom HttpException first.
 
 For example:
-If we just want to add a timeStamp, that is no need for using custom exception filter.
+If we just want to add a timestamp, that is no need for using a custom exception filter.

@@ -54,7 +54,7 @@ class HP {
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
-    }
+    },
   ],
 })
 export class AppModule {}
