@@ -1,5 +1,6 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get, Inject, Query } from '@nestjs/common';
 import { AppService } from './app.service';
+import { CustomExceptions } from './exceptions/custom.exceptions';
 
 @Controller()
 export class AppController {
@@ -12,7 +13,9 @@ export class AppController {
   ) {}
 
   @Get()
-  getHello(): string {
+  getHello(@Query() query: { isThrowError: string }): string {
+    if (query.isThrowError === 'true') throw new CustomExceptions();
+
     console.log(this.name);
     console.log(this.appService === this.alias);
     console.log(this.computer);

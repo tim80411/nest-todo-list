@@ -48,7 +48,7 @@ class HP {
     {
       provide: 'Laptop',
       useClass: false ? Mac : HP,
-    }
+    },
   ],
 })
 export class AppModule {}
