@@ -1,8 +1,18 @@
-import { Controller, Get, Inject, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Query,
+  UseFilters,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { CustomExceptions } from './exceptions/custom.exceptions';
+import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 @Controller()
+@UseFilters(HttpExceptionFilter)
 export class AppController {
   constructor(
     private readonly appService: AppService,
@@ -14,7 +24,8 @@ export class AppController {
 
   @Get()
   getHello(@Query() query: { isThrowError: string }): string {
-    if (query.isThrowError === 'true') throw new CustomExceptions();
+    if (query.isThrowError === 'true')
+      throw new HttpException('出錯了', HttpStatus.BAD_REQUEST);
 
     console.log(this.name);
     console.log(this.appService === this.alias);

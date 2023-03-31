@@ -3,6 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TodoModule } from './features/todo/todo.module';
 import { CopyTodoModule } from './features/copy-todo/copy-todo.module';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 class MessageBox {
   private readonly message: string;
@@ -49,6 +51,10 @@ class HP {
       provide: 'Laptop',
       useClass: false ? Mac : HP,
     },
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    }
   ],
 })
 export class AppModule {}
