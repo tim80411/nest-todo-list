@@ -1,19 +1,20 @@
 import {
+  Body,
   Controller,
   Get,
-  HttpStatus,
   NotFoundException,
   Param,
-  ParseBoolPipe,
-  UseFilters,
+  Patch,
+  Post,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
-import { BaseExceptionFilter } from '@nestjs/core';
-import { ParseIntPipe } from 'src/pipes/parse-int/parse-int.pipe';
+import { CreateTodoDto } from './dto/create-todo.dto';
+import { UpdateTodoDto } from './dto/update-todo.dto';
 import { TodoService } from './todo.service';
 
 // 若全域Filter要在特定位置不使用，使用BaseExceptionFilter可以置換
 @Controller('todos')
-@UseFilters(BaseExceptionFilter)
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
@@ -28,10 +29,23 @@ export class TodoController {
   }
 
   @Get('/:id')
-  getOne(
-    @Param('id', ParseIntPipe)
-    id: number,
-  ) {
-    return id;
+  getOne(@Param('id') id: number) {
+    return id + typeof id;
+  }
+
+  @Post()
+  createOne(@Body() dto: CreateTodoDto) {
+    return {
+      id: 1,
+      ...dto,
+    };
+  }
+
+  @Patch('/:id')
+  updateOne(@Param('id') id: number, @Body() dto: UpdateTodoDto) {
+    return {
+      id,
+      ...dto,
+    };
   }
 }

@@ -25,7 +25,7 @@ export class AppController {
   @Get()
   getHello(@Query() query: { isThrowError: string }): string {
     if (query.isThrowError === 'true')
-      throw new HttpException('出錯了', HttpStatus.BAD_REQUEST);
+      throw new HttpException('isThrowError出錯了', HttpStatus.BAD_REQUEST);
 
     console.log(this.name);
     console.log(this.appService === this.alias);
