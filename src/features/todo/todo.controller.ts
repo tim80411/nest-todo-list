@@ -9,6 +9,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { ConfigurationService } from 'src/common/configuration/configuration.service';
 import { Roles } from 'src/decoractors/roles/roles.decorator';
 import { Auth } from 'src/decorators/auth/auth.decorator';
 import { User } from 'src/decorators/user/user.decorator';
@@ -23,7 +24,10 @@ import { TodoService } from './todo.service';
 @Controller('todos')
 @UseInterceptors(HelloWorldInterceptor)
 export class TodoController {
-  constructor(private readonly todoService: TodoService) {}
+  constructor(
+    private readonly todoService: TodoService,
+    private readonly configService: ConfigurationService,
+  ) {}
 
   @Get()
   getAll() {
@@ -46,7 +50,7 @@ export class TodoController {
   @UseGuards(RoleGuard)
   @Roles('staff')
   getOne(@Param('id') id: number, @User('title') userName: string) {
-    console.log('==todo getOne==', userName);
+    console.log('==todo getOne==', this.configService.get('USERNAME'));
     return id + typeof id + userName;
   }
 

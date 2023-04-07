@@ -8,13 +8,14 @@ import {
   UseFilters,
 } from '@nestjs/common';
 import { AppService } from './app.service';
-import { CustomExceptions } from './exceptions/custom.exceptions';
+import { ConfigurationService } from './common/configuration/configuration.service';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 @Controller()
 @UseFilters(HttpExceptionFilter)
 export class AppController {
   constructor(
+    private readonly configService: ConfigurationService,
     private readonly appService: AppService,
     @Inject('MessageFactory') private readonly name: string,
     @Inject('Value') private readonly value: { name: string },
@@ -30,6 +31,11 @@ export class AppController {
     console.log(this.name);
     console.log(this.appService === this.alias);
     console.log(this.computer);
-    return this.appService.getHello() + this.name + this.value.name;
+    return (
+      this.appService.getHello() +
+      this.name +
+      this.value.name +
+      this.configService.get('USERNAME')
+    );
   }
 }

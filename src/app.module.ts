@@ -15,6 +15,7 @@ import { LoggerMiddleware } from './middlewares/logger/logger.middleware';
 import { HelloWorldMiddleware } from './middlewares/hello-world/hello-world.middleware';
 import { CopyTodoController } from './features/copy-todo/copy-todo.controller';
 import { AddUserMiddleware } from './middlewares/add-user/add-user.middleware';
+import { ConfigurationModule } from './common/configuration/configuration.module';
 
 class MessageBox {
   private readonly message: string;
@@ -32,7 +33,13 @@ class HP {
 }
 
 @Module({
-  imports: [TodoModule, CopyTodoModule],
+  imports: [
+    TodoModule,
+    CopyTodoModule,
+    ConfigurationModule.forRoot({
+      path: `../${process.env.NODE_ENV}.env`,
+    }),
+  ],
   controllers: [AppController],
   providers: [
     AppService,
