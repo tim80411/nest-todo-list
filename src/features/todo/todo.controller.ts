@@ -6,15 +6,16 @@ import {
   Param,
   Patch,
   Post,
-  UsePipes,
-  ValidationPipe,
+  UseInterceptors,
 } from '@nestjs/common';
+import { HelloWorldInterceptor } from 'src/interceptors/hello-world/hello-world.interceptor';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { TodoService } from './todo.service';
 
 // 若全域Filter要在特定位置不使用，使用BaseExceptionFilter可以置換
 @Controller('todos')
+@UseInterceptors(HelloWorldInterceptor)
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
