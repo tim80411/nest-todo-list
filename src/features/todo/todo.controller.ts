@@ -6,8 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { HelloWorldInterceptor } from 'src/interceptors/hello-world/hello-world.interceptor';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
@@ -27,6 +29,12 @@ export class TodoController {
   @Get('/error')
   getError() {
     throw new NotFoundException('找無');
+  }
+
+  @Get('/auth')
+  @UseGuards(AuthGuard)
+  getAuth() {
+    return 'ok';
   }
 
   @Get('/:id')
