@@ -1,10 +1,19 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TodoModule } from './features/todo/todo.module';
 import { CopyTodoModule } from './features/copy-todo/copy-todo.module';
 import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { LoggerMiddleware } from './middlewares/logger/logger.middleware';
+import { HelloWorldMiddleware } from './middlewares/hello-world/hello-world.middleware';
+import { CopyTodoController } from './features/copy-todo/copy-todo.controller';
 
 class MessageBox {
   private readonly message: string;
@@ -61,4 +70,13 @@ class HP {
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .exclude({ path: '/todos', method: RequestMethod.GET }) // specific path
+      .forRoutes('/todos'); // path match pattern
+
+    consumer.apply(HelloWorldMiddleware).forRoutes(CopyTodoController);
+  }
+}
