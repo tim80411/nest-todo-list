@@ -9,7 +9,11 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { Roles } from 'src/decoractors/roles/roles.decorator';
+import { Auth } from 'src/decorators/auth/auth.decorator';
+import { User } from 'src/decorators/user/user.decorator';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { RoleGuard } from 'src/guards/role/role.guard';
 import { HelloWorldInterceptor } from 'src/interceptors/hello-world/hello-world.interceptor';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
@@ -32,14 +36,18 @@ export class TodoController {
   }
 
   @Get('/auth')
-  @UseGuards(AuthGuard)
+  // same as @UseGuard + @Roles
+  @Auth('admin')
   getAuth() {
     return 'ok';
   }
 
   @Get('/:id')
-  getOne(@Param('id') id: number) {
-    return id + typeof id;
+  @UseGuards(RoleGuard)
+  @Roles('staff')
+  getOne(@Param('id') id: number, @User('title') userName: string) {
+    console.log('==todo getOne==', userName);
+    return id + typeof id + userName;
   }
 
   @Post()

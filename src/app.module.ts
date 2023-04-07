@@ -14,6 +14,7 @@ import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { LoggerMiddleware } from './middlewares/logger/logger.middleware';
 import { HelloWorldMiddleware } from './middlewares/hello-world/hello-world.middleware';
 import { CopyTodoController } from './features/copy-todo/copy-todo.controller';
+import { AddUserMiddleware } from './middlewares/add-user/add-user.middleware';
 
 class MessageBox {
   private readonly message: string;
@@ -72,6 +73,8 @@ class HP {
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AddUserMiddleware).forRoutes('');
+
     consumer
       .apply(LoggerMiddleware)
       .exclude({ path: '/todos', method: RequestMethod.GET }) // specific path
